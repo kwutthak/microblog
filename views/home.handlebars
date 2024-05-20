@@ -7,9 +7,18 @@
         <!-- show the create post form when logged in -->
         <section class="post-form">
             <!-- make a header here -->
+            <h2>Create a New Post</h2>
             <form action="/posts" method="POST">
                 <!-- title input field name = "title" -->
+                <div>
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="title" required>
+                </div>
                 <!-- text area input field name = "content" -->
+                <div>
+                    <label for="content">Content</label>
+                    <textarea name="content" id="content" rows="4" required></textarea>
+                </div>
 
                 <div class="form-actions">
                     <button type="button" class="emoji-button" onclick="toggleEmojiPanel()">😀</button>
@@ -19,14 +28,16 @@
 
             <div id="emoji-container" class="emoji-panel" style="display: none;">
                 <!-- input field for the emoji search, use oninput="searchEmojis() -->
+            <input type="text" id="emoji-search" placeholder="Search emojis..." oninput="searchEmojis()">
                 <!-- a div, id = "emoji-grid" -->
+            <div id="emoji-grid" class="emoji-grid"></div>
             </div>
         </section>
     {{/if}}
 
     <section class="posts-list">
         <!-- recent posts -->
-
+        <h2>Recent Posts</h2>
         {{#if posts.length}}
         <ul>
             {{#each posts}}
@@ -36,6 +47,7 @@
         </ul>
         {{else}}
             <!-- no posts, oh no, what now? -->
+            <p>No posts available. Be the first to post something!</p>
         {{/if}}
     </section>
 </section>
@@ -44,58 +56,67 @@
 {{! JavaScript for Emoji Integration }}
 <script>
 
-/*
- You want to show a subset of the emojis. About 200. However,
- you also want the user to be able to search all emojis,
- so, put them in this array when the array is empty so 
- that you have them.
-*/
+    /*
+    You want to show a subset of the emojis. About 200. However,
+    you also want the user to be able to search all emojis,
+    so, put them in this array when the array is empty so 
+    that you have them.
+    */
 
-let allEmojis = [];  // Global list to hold all emojis
+    let allEmojis = [];  // Global list to hold all emojis
 
-function toggleEmojiPanel() {
-    const container = document.getElementById('emoji-container');
-    container.style.display = container.style.display === 'none' ? 'block' : 'none';
+    async function toggleEmojiPanel() {
+        const container = document.getElementById('emoji-container');
+        container.style.display = container.style.display === 'none' ? 'block' : 'none';
 
-
-    if(container.style.display === 'block' && allEmojis.length == 0){
-        // go "Fetch" you some emojis and show them off with displayEmojies
+        if (container.style.display === 'block' && allEmojis.length === 0) {
+            // go "Fetch" you some emojis and show them off with displayEmojies
+            try {
+                const response = await fetch('https://emoji-api.com/emojis?access_key=ce48d7f7e4fe906560a6d65d36735cdc7cf8cd7a');
+                const emojis = await response.json();
+                allEmojis = emojis;
+                displayEmojis(emojis);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        } else if (container.style.display === 'block' && allEmojis.length !== 0) {
+            displayEmojis(allEmojis);
+        }
     }
-}
 
-function displayEmojis(emojis,limit=200) {
-    const container = document.getElementById('emoji-grid');
-    container.innerHTML = '';  // Clear previous results
-    if (Array.isArray(emojis) && emojis.length > 0) {
-        emojis.slice(0, limit).forEach(emoji => {
-            const emojiElement = document.createElement('span');
-            emojiElement.textContent = emoji.character;
-            emojiElement.title = emoji.slug;  // Showing the emoji name on hover
-            emojiElement.style.cursor = 'pointer';
-            emojiElement.onclick = () => insertEmoji(emoji.character);
-            container.appendChild(emojiElement);
-        });
-    } else {
-        container.textContent = 'No emojis found. Try a different search!';
+    function displayEmojis(emojis,limit=200) {
+        const container = document.getElementById('emoji-grid');
+        container.innerHTML = '';  // Clear previous results
+        if (Array.isArray(emojis) && emojis.length > 0) {
+            emojis.slice(0, limit).forEach(emoji => {
+                const emojiElement = document.createElement('span');
+                emojiElement.textContent = emoji.character;
+                emojiElement.title = emoji.slug;  // Showing the emoji name on hover
+                emojiElement.style.cursor = 'pointer';
+                emojiElement.onclick = () => insertEmoji(emoji.character);
+                container.appendChild(emojiElement);
+            });
+        } else {
+            container.textContent = 'No emojis found. Try a different search!';
+        }
     }
-}
 
-function searchEmojis() {
-    const searchTerm = document.getElementById('emoji-search').value.toLowerCase();
-    // array.filter takes a predicate
-    // use string.includes. 
+    function searchEmojis() {
+        const searchTerm = document.getElementById('emoji-search').value.toLowerCase();
+        // array.filter takes a predicate
+        // use string.includes. 
 
-    const filteredEmojis = allEmojis.filter(...);
-    
-    displayEmojis(filteredEmojis);
-}
+        // const filteredEmojis = allEmojis.filter(...);
+        
+        displayEmojis(filteredEmojis);
+    }
 
-function insertEmoji(emoji) {
-    // put an emoji on a form somehow. 
+    function insertEmoji(emoji) {
+        // put an emoji on a form somehow. 
 
-    // do this when you're doing getting the emoji on the form
-    //
-    textarea.focus();  // Keep focus on the textarea
-}
+        // do this when you're doing getting the emoji on the form
+        //
+        textarea.focus();  // Keep focus on the textarea
+    }
 </script>
 
