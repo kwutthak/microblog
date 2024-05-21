@@ -66,7 +66,8 @@
         if (container.style.display === 'block' && allEmojis.length === 0) {
             // fetch the emojis from the emoji api
             try {
-                const response = await fetch('https://emoji-api.com/emojis?access_key=ce48d7f7e4fe906560a6d65d36735cdc7cf8cd7a');
+                const apiKey = '{{apiKey}}';
+                const response = await fetch(`https://emoji-api.com/emojis?access_key=${apiKey}`);
                 const emojis = await response.json();
                 allEmojis = emojis;
                 displayEmojis(emojis);
