@@ -132,14 +132,13 @@ app.post('/posts', (req, res) => {
     addPost(title, content, user);
     res.redirect('/');
 });
-app.post('/like/:id', (req, res) => {
+app.post('/like/:id', isAuthenticated, (req, res) => {
     // TODO: Update post likes
     updatePostLikes(req, res);
 });
 app.get('/profile', isAuthenticated, (req, res) => {
     // TODO: Render profile page
-    const user = getCurrentUser(req);
-    res.render('profile', { posts, user });
+    renderProfile(req, res);
 });
 app.get('/avatar/:username', (req, res) => {
     // TODO: Serve the avatar image for the user
@@ -290,6 +289,9 @@ function logoutUser(req, res) {
 // Function to render the profile page
 function renderProfile(req, res) {
     // TODO: Fetch user posts and render the profile page
+    const user = getCurrentUser(req);
+    const userPosts = posts.filter(post => post.username === user.username);
+    res.render('profile', { posts: userPosts, user });
 }
 
 // Function to update post likes
@@ -343,7 +345,7 @@ function getPosts() {
 // Function to add a new post
 function addPost(title, content, user) {
     // TODO: Create a new post object and add to posts array
-    const newPost = { id: user.id, title, content, username: user.username, timestamp: getDate(), likes: 0 };
+    const newPost = { id: posts.length + 1, title, content, username: user.username, timestamp: getDate(), likes: 0 };
     posts.push(newPost);
 }
 

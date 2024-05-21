@@ -28,7 +28,6 @@
 
     async function handleLikeClick(event) {
         const postId = event.target.getAttribute('data-id');
-
         // you might want to "fetch" something...      
         try {
             const response = await fetch(`/like/${postId}`, {
