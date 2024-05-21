@@ -77,7 +77,7 @@ app.use(
 // should be used in your template files. 
 // 
 app.use((req, res, next) => {
-    res.locals.appName = 'MicroBlog';
+    res.locals.appName = 'Trailblogger';
     res.locals.copyrightYear = 2024;
     res.locals.postNeoType = 'Post';
     res.locals.loggedIn = req.session.loggedIn || false;
@@ -174,15 +174,38 @@ app.listen(PORT, () => {
 
 // Example data for posts and users
 
-let nextId = 2;
+let nextId = 3;
 
 let posts = [
-    { id: 1, title: 'Sample Post', content: 'This is a sample post.', username: 'SampleUser', timestamp: '2024-01-01 10:00', likes: 0 },
-    { id: 2, title: 'Another Post', content: 'This is another sample post.', username: 'AnotherUser', timestamp: '2024-01-02 12:00', likes: 0 },
+    { id: 1, 
+      title: 'Cute!', 
+      content: 'Just took a bunch of new photos on our latest adventure! Can\'t wait to share them with everyone. #MemoryOfTheWorld #AstralExpress', 
+      username: 'March 7th', 
+      timestamp: '2024-04-07 10:00', 
+      likes: 0 
+    },
+    { id: 2, 
+      title: 'Morals of Penacony', 
+      content: 'The balance of the universe can be delicate. Our latest mission has reminded me of the importance of maintaining harmony.', 
+      username: 'Dan Heng', 
+      timestamp: '2024-01-22 12:00', 
+      likes: 0 
+    },
+    { id: 3, 
+        title: 'That\'s that me, espresso~', 
+        content: 'Enjoying a cup of coffee while plotting our next course. The stars never cease to amaze me. ', 
+        username: 'Himeko', 
+        timestamp: '2024-05-21 9:00', 
+        likes: 0 
+    }
 ];
 let users = [
-    { id: 1, username: 'SampleUser', avatar_url: undefined, memberSince: '2024-01-01 08:00' },
-    { id: 2, username: 'AnotherUser', avatar_url: undefined, memberSince: '2024-01-02 09:00' },
+    { id: 1, username: 'Caelus', avatar_url: undefined, memberSince: '2023-04-26 12:00' },
+    { id: 2, username: 'Stelle', avatar_url: undefined, memberSince: '2023-04-26 12:00' },
+    { id: 3, username: 'March 7th', avatar_url: undefined, memberSince: '2023-04-26 12:00' },
+    { id: 4, username: 'Dan Heng', avatar_url: undefined, memberSince: '2023-04-26 12:00' },
+    { id: 5, username: 'Welt', avatar_url: undefined, memberSince: '2023-04-26 12:00' },
+    { id: 6, username: 'Himeko', avatar_url: undefined, memberSince: '2023-04-26 12:00' },
 ];
 
 // Function to format the current date and time for timestamps

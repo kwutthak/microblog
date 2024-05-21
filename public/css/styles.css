@@ -8,7 +8,7 @@ body {
 }
 
 header {
-    background-color: #b3d1f1;
+    background-color: #262425;
     padding: 15px 15px;
     display: flex;
     justify-content: space-between;
@@ -23,7 +23,7 @@ header h1 {
 
 footer {
     text-align: center;
-    background-color: #b3d1f1;
+    background-color: #262425;
     padding: 5px;
     margin-top: auto;
     height: 50px;
@@ -75,6 +75,7 @@ nav a {
 
 .content-container {
     display: flex;
+    justify-content: center;
 }
 
 .content-container h2 {
@@ -85,9 +86,10 @@ nav a {
     flex-grow: 1;
     box-sizing: border-box;
     margin-right: 40px;
+    max-width: 850px;
 }
 
-#emptyMsg {
+.posts-list p {
     text-align: center;
 }
 
@@ -95,11 +97,10 @@ nav a {
 
 .post {
     display: flex;
-    background-color: #ffffff;
+    background-color: #FFFFFF;
     border-radius: 5px;
     margin-bottom: 30px;
     padding: 20px;
-    display: flex;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -201,7 +202,7 @@ nav a {
     padding: 10px;
     border: 1px solid rgba(78, 78, 78, 0.5);
     border-radius: 5px;
-    background-color: #b3d1f1;
+    background-color: #262425;
     border: none;
     cursor: pointer;
     box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
@@ -225,16 +226,13 @@ nav a {
 
 .emoji-panel {
     display: flex;
-    position: absolute;
-    top: 58%;
-    width: 100%;
     margin-top: 10px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #fff;
     max-height: 227px;
-    max-width: 410px;
+    max-width: 435px;
     overflow-y: auto;
 }
 
@@ -296,6 +294,10 @@ nav a {
     text-align: center;
 }
 
+.post-content p {
+    text-align: left;
+}
+
 /* Login / Register */
 
 .login-register {
@@ -334,7 +336,7 @@ nav a {
 .login-area button, .register-area button {
     width: 100%;
     padding: 10px;
-    background-color: #b3d1f1;
+    background-color: #262425;
     border: none;
     border-radius: 5px;
     color: white;
