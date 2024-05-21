@@ -105,9 +105,8 @@
         const searchTerm = document.getElementById('emoji-search').value.toLowerCase();
         // array.filter takes a predicate
         // use string.includes. 
-
+        const filteredEmojis = allEmojis.filter(emoji => emoji.unicodeName.toLowerCase().includes(searchTerm));
         // const filteredEmojis = allEmojis.filter(...);
-        
         displayEmojis(filteredEmojis);
     }
 
@@ -116,7 +115,18 @@
 
         // do this when you're doing getting the emoji on the form
         //
+        const textarea = document.getElementById('content');
         textarea.focus();  // Keep focus on the textarea
+        const activeElement = document.activeElement;  // Get the currently focused element
+        console.log(activeElement);
+        if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') {
+            const start = activeElement.selectionStart;
+            const end = activeElement.selectionEnd;
+            activeElement.value = activeElement.value.substring(0, start) + emoji + activeElement.value.substring(end);
+            activeElement.selectionEnd = start + emoji.length;
+            activeElement.selectionStart = activeElement.selectionEnd  // Move cursor after emoji
+            activeElement.focus();  // Refocus on the input field
+        }
     }
 </script>
 

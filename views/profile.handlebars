@@ -4,10 +4,14 @@
 <div class="profile-container">
     <div class="profile-avatar">
         <!-- Correct path for the default avatar image -->
+        <img src="{{user.avatar_url}}" alt="User's Avatar" class="avatar">
     </div>
     
     <section class="profile-info">
         <!-- user profile info -->
+        <h2>User Profile</h2>
+        <p>Username: {{user.username}}</p>
+        <p>Member since: {{user.memberSince}}</p>
     </section>
 </div>
 

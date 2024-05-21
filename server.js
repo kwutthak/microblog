@@ -2,6 +2,7 @@ const express = require('express');
 const expressHandlebars = require('express-handlebars');
 const session = require('express-session');
 const canvas = require('canvas');
+const { createCanvas } = require('canvas');
 const { register } = require('module');
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -137,9 +138,12 @@ app.post('/like/:id', (req, res) => {
 });
 app.get('/profile', isAuthenticated, (req, res) => {
     // TODO: Render profile page
+    const user = getCurrentUser(req);
+    res.render('profile', { posts, user });
 });
 app.get('/avatar/:username', (req, res) => {
     // TODO: Serve the avatar image for the user
+    handleAvatar(req, res);
 });
 app.post('/register', (req, res) => {
     // TODO: Register a new user
@@ -248,7 +252,8 @@ function isAuthenticated(req, res, next) {
 function registerUser(req, res) {
     // TODO: Register a new user and redirect appropriately
     const username = req.body.username;
-    if (findUserByUsername(username) === undefined) {
+    const user = findUserByUsername(username);
+    if (user === undefined) {
         // Set session userId to indicate user is logged in
         req.session.userId = addUser(username).id;
         req.session.username = username;
@@ -263,7 +268,8 @@ function registerUser(req, res) {
 function loginUser(req, res) {
     // TODO: Login a user and redirect appropriately
     const username = req.body.username;
-    if (findUserByUsername(username) !== undefined) {
+    const user = findUserByUsername(username);
+    if (user !== undefined) {
         // Set session userId to indicate user is logged in
         req.session.username = username;
         req.session.userId = findUserByUsername(username).id;
@@ -314,6 +320,13 @@ function deletePost(req, res) {
 // Function to handle avatar generation and serving
 function handleAvatar(req, res) {
     // TODO: Generate and serve the user's avatar image
+    const username = req.params.username;
+    const user = findUserByUsername(username);
+    if (user.avatar_url === undefined) {
+        const avatar = generateAvatar(username[0]);
+        user.avatar_url = avatar;
+    }
+    res.send(Buffer.from(user.avatar_url.split(',')[1], 'base64'));
 }
 
 // Function to get the current user from session
@@ -338,9 +351,22 @@ function addPost(title, content, user) {
 function generateAvatar(letter, width = 100, height = 100) {
     // TODO: Generate an avatar image with a letter
     // Steps:
+    const numColors = 16777215; // #000000 to #FFFFFF
     // 1. Choose a color scheme based on the letter
+    let randColor = "#" + Math.floor(Math.random() * numColors).toString(16).padStart(6, '0');;
     // 2. Create a canvas with the specified width and height
+    const canvas = createCanvas(width, height);
+    const context = canvas.getContext('2d');
     // 3. Draw the background color
+    context.fillStyle = randColor;
+    context.fillRect(0, 0, width, height);
     // 4. Draw the letter in the center
+    context.fillStyle = '#FFFFFF';
+    context.font = '50px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(letter, 50, 50);
     // 5. Return the avatar as a PNG buffer
+    const buffer = canvas.toDataURL('image/png');
+    return buffer;
 }
