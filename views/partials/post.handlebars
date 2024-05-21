@@ -10,9 +10,6 @@
         <p>{{content}}</p>
         <div class="post-status-bar">
             <!-- everything that is shown in the status bar -->
-            <!-- Heart = ♥ -->
-            <p class="likes">{{likes}} Likes</p>
-            <!-- font awesome  trashcan = <i class="fas fa-trash-alt"> </i>-->
             {{#ifCond user.username username}}
                 <button class="delete-button" data-id="{{id}}" onclick="handleDeleteClick(event)">
                     <i class="fas fa-trash-alt"></i>
@@ -20,6 +17,7 @@
             {{else}}
                 <button class="like-button" data-id="{{id}}" onclick="handleLikeClick(event)">♥</button>
             {{/ifCond}}
+            <p class="likes">{{likes}} Likes</p>
             <p>Posted By {{username}} on {{timestamp}}</p>
         </div>        
     </div>
@@ -28,8 +26,8 @@
 
     async function handleLikeClick(event) {
         const postId = event.target.getAttribute('data-id');
-        // you might want to "fetch" something...      
         try {
+            // call fetch to update the post' likes on server side   
             const response = await fetch(`/like/${postId}`, {
                 method: 'POST',
                 headers: {
@@ -38,6 +36,7 @@
             });
             const result = await response.json();
             if (result.success === true) {
+                // update the number of likes on client side
                 const postElement = document.querySelector(`.post[data-id="${postId}"]`);
                 const likesElement = postElement.querySelector('.likes');
                 likesElement.textContent = result.likes + " Likes";
@@ -52,9 +51,9 @@
     async function handleDeleteClick(event) {
         const buttonElement = event.target.closest('.delete-button');
         const postId = buttonElement.getAttribute('data-id');        
-
-        // you might want to "fetch" something...        
+     
         try {
+            // call fetch to delete the post on server side 
             const response = await fetch(`/delete/${postId}`, {
                 method: 'POST',
                 headers: {
@@ -63,6 +62,7 @@
             });
             const result = await response.json();
             if (result.success === true) {
+                // remove the post element on client side
                 const postElement = document.querySelector(`.post[data-id="${postId}"]`);
                 postElement.remove();
             } else {
@@ -71,5 +71,6 @@
         } catch (error) {
             console.error('Error:', error);
         }
-    }    
+    }
+
 </script>

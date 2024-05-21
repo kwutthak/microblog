@@ -4,20 +4,16 @@
 {{! New Post Submission Form }}
 <section class="content-container">
     {{#if loggedIn}}
-        <!-- show the create post form when logged in -->
         <section class="post-form">
-            <!-- make a header here -->
             <h2>Create a New Post</h2>
             <form action="/posts" method="POST">
-                <!-- title input field name = "title" -->
+                <!-- title of post -->
                 <div>
-                    <label for="title">Title</label>
-                    <input type="text" name="title" id="title" required>
+                    <input type="text" name="title" id="title" placeholder="Title" required>
                 </div>
-                <!-- text area input field name = "content" -->
+                <!-- content of post -->
                 <div>
-                    <label for="content">Content</label>
-                    <textarea name="content" id="content" rows="4" required></textarea>
+                    <textarea name="content" id="content" rows="4" placeholder="What's on your mind?" required></textarea>
                 </div>
 
                 <div class="form-actions">
@@ -26,28 +22,25 @@
                 </div>
             </form>
 
+            <!-- emojis -->
             <div id="emoji-container" class="emoji-panel" style="display: none;">
-                <!-- input field for the emoji search, use oninput="searchEmojis() -->
-            <input type="text" id="emoji-search" placeholder="Search emojis..." oninput="searchEmojis()">
-                <!-- a div, id = "emoji-grid" -->
-            <div id="emoji-grid" class="emoji-grid"></div>
+                <input type="text" id="emoji-search" placeholder="Search emojis..." oninput="searchEmojis()">
+                <div id="emoji-grid" class="emoji-grid"></div>
             </div>
         </section>
     {{/if}}
 
+    <!-- list of all the recent posts -->
     <section class="posts-list">
-        <!-- recent posts -->
         <h2>Recent Posts</h2>
         {{#if posts.length}}
         <ul>
             {{#each posts}}
-                <!-- you have to pass the user in to posts and this is the syntax -->
                 {{> post this user=../user}}            
             {{/each}}
         </ul>
         {{else}}
-            <!-- no posts, oh no, what now? -->
-            <p>No posts available. Be the first to post something!</p>
+            <p id="emptyMsg">- The path of Traiblaze is never treaded alone. Be the first to say something on this new journey! -</p>
         {{/if}}
     </section>
 </section>
@@ -65,12 +58,13 @@
 
     let allEmojis = [];  // Global list to hold all emojis
 
+    // reveal or hide the list of all emojis
     async function toggleEmojiPanel() {
         const container = document.getElementById('emoji-container');
         container.style.display = container.style.display === 'none' ? 'block' : 'none';
 
         if (container.style.display === 'block' && allEmojis.length === 0) {
-            // go "Fetch" you some emojis and show them off with displayEmojies
+            // fetch the emojis from the emoji api
             try {
                 const response = await fetch('https://emoji-api.com/emojis?access_key=ce48d7f7e4fe906560a6d65d36735cdc7cf8cd7a');
                 const emojis = await response.json();
@@ -84,6 +78,7 @@
         }
     }
 
+    // render the given emojis on the screen
     function displayEmojis(emojis,limit=200) {
         const container = document.getElementById('emoji-grid');
         container.innerHTML = '';  // Clear previous results
@@ -101,32 +96,31 @@
         }
     }
 
+    // filter the emojis with the given search term
     function searchEmojis() {
         const searchTerm = document.getElementById('emoji-search').value.toLowerCase();
-        // array.filter takes a predicate
-        // use string.includes. 
         const filteredEmojis = allEmojis.filter(emoji => emoji.unicodeName.toLowerCase().includes(searchTerm));
-        // const filteredEmojis = allEmojis.filter(...);
         displayEmojis(filteredEmojis);
     }
 
+    // insert an emoji onto the text form
     function insertEmoji(emoji) {
-        // put an emoji on a form somehow. 
-
-        // do this when you're doing getting the emoji on the form
-        //
         const textarea = document.getElementById('content');
-        textarea.focus();  // Keep focus on the textarea
-        const activeElement = document.activeElement;  // Get the currently focused element
+        // keep focus on the textarea
+        textarea.focus();
+        // get the currently focused element
+        const activeElement = document.activeElement;  
         console.log(activeElement);
         if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') {
             const start = activeElement.selectionStart;
             const end = activeElement.selectionEnd;
+            // add the emoji and move the cursor
             activeElement.value = activeElement.value.substring(0, start) + emoji + activeElement.value.substring(end);
             activeElement.selectionEnd = start + emoji.length;
-            activeElement.selectionStart = activeElement.selectionEnd  // Move cursor after emoji
-            activeElement.focus();  // Refocus on the input field
+            activeElement.selectionStart = activeElement.selectionEnd
+            // refocus on the textarea
+            activeElement.focus();
         }
     }
+    
 </script>
-

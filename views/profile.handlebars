@@ -3,23 +3,22 @@
 
 <div class="profile-container">
     <div class="profile-avatar">
-        <!-- Correct path for the default avatar image -->
         <img src="{{user.avatar_url}}" alt="User's Avatar" class="avatar">
     </div>
     
     <section class="profile-info">
         <!-- user profile info -->
         <h2>User Profile</h2>
-        <p>Username: {{user.username}}</p>
-        <p>Member since: {{user.memberSince}}</p>
+        <p><b>Username:</b> {{user.username}}</p>
+        <p><b>Member since:</b> {{user.memberSince}}</p>
     </section>
 </div>
 
+<!-- list of all the current user's posts -->
 <section class="user-posts">
-    <!-- you can call posts tweets, or truths, or whatever, these are neologisms. Choose your own new in server.js -->
+
     <h2>Your {{{postNeoType}}}s</h2>
     
-    <!-- you'll need to make this conditaionl and #each expression work -->
     {{#if posts.length}}
         <ul>
             {{#each posts}}
@@ -27,7 +26,7 @@
             {{/each}}
         </ul>
     {{else}}
-        <!-- fix this up with some helper functions and other handlebars expressions, or add you own character -->
-        <p>You have not posted yet, poster.</p>
+        <p>- Nothing to see here. C'mon, do something. The trail is not gonna blaze itself. -</p>
     {{/if}}
+
 </section>
