@@ -137,8 +137,9 @@ app.use(express.json());                            // Parse JSON bodies (as sen
 // We pass the posts and user variables into the home
 // template
 //
+let sortMode = 'recency';
 app.get('/', async (req, res) => {
-    const posts = await getPosts();
+    const posts = await getPosts(sortMode);
     const user = await getCurrentUser(req) || {};
     res.render('home', { posts, user, apiKey: EMOJI_API_KEY });
 });
@@ -241,6 +242,10 @@ app.get('/logoutCallback', (req, res) => {
 // Delete a post if the current user is the owner
 app.post('/delete/:id', isAuthenticated, async (req, res) => {
     await deletePost(req, res);
+});
+// Route to fetch sorted posts
+app.get('/sortPosts', async (req, res) => {
+    await sortPosts(req, res);
 });
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -391,9 +396,22 @@ async function getCurrentUser(req) {
     return await findUserById(req.session.userId);
 }
 
-// Function to get all posts, sorted by latest first
-function getPosts() {
-    return db.all('SELECT * FROM posts ORDER BY timestamp DESC');
+// Function to get all posts with the given sort method
+async function getPosts(sortMethod) {
+    let order;
+    switch (sortMethod) {
+        case 'recency':
+            order = 'ORDER BY timestamp DESC';
+            break;
+        case 'likes':
+            order = 'ORDER BY likes DESC, timestamp DESC';
+            break;
+        default:
+            order = 'ORDER BY timestamp DESC';
+            break;
+    }
+    
+    return db.all(`SELECT * FROM posts ${order}`);
 }
 
 // Function to add a new post
@@ -426,4 +444,9 @@ async function generateAvatar(letter, width = 100, height = 100) {
     context.fillText(letter, 50, 50);
     // 5. Return the avatar as a PNG buffer
     return canvas.toBuffer('image/png');
+}
+
+async function sortPosts(req, res) {
+    sortMode = req.query.sortMethod || 'recency';
+    res.redirect('/');
 }

@@ -32,7 +32,17 @@
 
     <!-- list of all the recent posts -->
     <section class="posts-list">
-        <h2>Recent Posts</h2>
+        <section class="posts-header">
+            <h2>Recent Posts</h2>
+            <!-- post sorting options -->
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="dropdownToggle()">Sort By</button>
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <button class="dropdown-item" onclick="sortByRecency()" >Recency</button>
+                    <button class="dropdown-item" onclick="sortByLikes()">Number of Likes</button>
+                </div>
+            </div>
+        </section>
         {{#if posts.length}}
         <ul>
             {{#each posts}}
@@ -48,6 +58,39 @@
 
 {{! JavaScript for Emoji Integration }}
 <script>
+
+    // showing and hiding drop down menu
+    function dropdownToggle() {
+        document.getElementById("dropdown-menu").classList.toggle("show");
+    }
+
+    // close the dropdown menu
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropdown-button')) {
+            var dropdowns = document.getElementsByClassName("dropdown-menu");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+    // sort posts by recency
+    async function sortByRecency() {
+        const sortMethod = 'recency';
+        await fetch(`/sortPosts?sortMethod=${sortMethod}`);
+        window.location.reload(true);
+    }
+
+    // sort posts by number of likes
+    async function sortByLikes() {
+        const sortMethod = 'likes';
+        await fetch(`/sortPosts?sortMethod=${sortMethod}`);
+        window.location.reload(true);
+    }
 
     /*
     You want to show a subset of the emojis. About 200. However,
