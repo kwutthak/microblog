@@ -6,6 +6,9 @@ const { createCanvas } = require('canvas');
 const { register } = require('module');
 const sqlite = require('sqlite');
 const sqlite3 = require('sqlite3');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const crypto = require('crypto');
 require('dotenv').config();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -15,6 +18,26 @@ require('dotenv').config();
 const app = express();
 const PORT = 3000;
 const EMOJI_API_KEY = process.env.EMOJI_API_KEY;
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+
+// Configure passport
+//
+passport.use(new GoogleStrategy({
+    clientID: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
+    callbackURL: `http://localhost:${PORT}/auth/google/callback`
+}, (token, tokenSecret, profile, done) => {
+    return done(null, profile);
+}));
+
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+
+passport.deserializeUser((obj, done) => {
+    done(null, obj);
+});
 
 // Set up database with SQLITE
 //
@@ -87,6 +110,9 @@ app.use(
     })
 );
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Replace any of these variables below with constants for your application. These variables
 // should be used in your template files. 
 // 
@@ -117,6 +143,33 @@ app.get('/', async (req, res) => {
     res.render('home', { posts, user, apiKey: EMOJI_API_KEY });
 });
 
+// Redirect to Google's OAuth 2.0 server
+//
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// Handle OAuth 2.0 server response
+//
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), async (req, res) => {
+    const googleId = req.user.id;
+    const hashedGoogleId = crypto.createHash('sha256').update(googleId).digest('hex');
+    const user = await db.get('SELECT * FROM users WHERE hashedGoogleId = ?', [hashedGoogleId]);
+
+    if (user) {
+        req.session.username = user.username;
+        req.session.userId = user.id;
+        req.session.loggedIn = true;
+        res.redirect('/');
+    } else {
+        req.session.hashedGoogleId = hashedGoogleId;
+        res.redirect('/registerUsername');
+    }
+});
+
+// Render new registration page
+app.get('/registerUsername', (req, res) => {
+    res.render('registerUsername', { regError: req.query.error });
+});
+
 // Register GET route is used for error response from registration
 //
 app.get('/register', (req, res) => {
@@ -142,7 +195,7 @@ app.post('/posts', async (req, res) => {
     const title = req.body.title;
     const content = req.body.content;
     const user = await getCurrentUser(req);
-    if (user !== undefined) {
+    if (user) {
         await addPost(title, content, user);
         res.redirect('/');
     } else {
@@ -161,6 +214,10 @@ app.get('/profile', isAuthenticated, async (req, res) => {
 app.get('/avatar/:username', async (req, res) => {
     await handleAvatar(req, res);
 });
+// Register a new user (OAuth)
+app.post('/registerUsername', async (req, res) => {
+    await registerUser(req, res);
+});
 // Register a new user
 app.post('/register', async (req, res) => {
     await registerUser(req, res);
@@ -172,6 +229,14 @@ app.post('/login', async (req, res) => {
 // Logout the user
 app.get('/logout', (req, res) => {
     logoutUser(req, res);
+});
+// Logout confirmation
+app.get('/googleLogout', (req, res) => {
+    res.render('googleLogout');
+});
+// Logout callback
+app.get('/logoutCallback', (req, res) => {
+    res.redirect('/');
 });
 // Delete a post if the current user is the owner
 app.post('/delete/:id', isAuthenticated, async (req, res) => {
@@ -225,9 +290,8 @@ async function findPostById(postId) {
 }
 
 // Function to add a new user into the database
-async function addUser(username) {
+async function addUser(username, hashedGoogleId) {
     const date = getDate();
-    const hashedGoogleId = '';  // REPLACE THIS LINE AFTER GOOGLE AUTH
     return await db.run('INSERT INTO users (username, hashedGoogleId, avatar_url, memberSince) VALUES (?, ?, ?, ?)', [username, hashedGoogleId, '', date]);
 }
 
@@ -244,12 +308,13 @@ function isAuthenticated(req, res, next) {
 // Function to register a user
 async function registerUser(req, res) {
     const username = req.body.username;
+    const hashedGoogleId = req.session.hashedGoogleId;
     const user = await findUserByUsername(username);
 
-    if (user === undefined) {
-        newUser = await addUser(username);
-        req.session.userId = newUser.lastID
+    if (!user) {
+        newUser = await addUser(username, hashedGoogleId);
         req.session.username = username;
+        req.session.userId = newUser.lastID
         req.session.loggedIn = true;
         res.redirect('/');
     } else {
@@ -262,7 +327,7 @@ async function registerUser(req, res) {
 async function loginUser(req, res) {
     const username = req.body.username;
     const user = await findUserByUsername(username);
-    if (user !== undefined) {
+    if (user) {
         req.session.username = username;
         req.session.userId = user.id;
         req.session.loggedIn = true;
@@ -275,7 +340,7 @@ async function loginUser(req, res) {
 // Function to logout a user
 function logoutUser(req, res) {
     req.session.destroy();
-    res.redirect('/');
+    res.redirect('/googleLogout');
 }
 
 // Function to render the profile page
@@ -289,7 +354,7 @@ async function renderProfile(req, res) {
 async function updatePostLikes(req, res) {
     const postId = parseInt(req.params.id);
     const post = await findPostById(postId);
-    if (post !== undefined) {
+    if (post) {
         await db.run('UPDATE posts SET likes = likes + 1 WHERE id = ?', [postId]);
         res.status(200).json({ success: true, likes: post.likes });
     } else {
@@ -301,7 +366,7 @@ async function updatePostLikes(req, res) {
 async function deletePost(req, res) {
     const postId = parseInt(req.params.id);
     const post = await findPostById(postId);
-    if (post !== undefined && post.username === req.session.username) {
+    if (post && post.username === req.session.username) {
         await db.run('DELETE FROM posts WHERE id = ?', [postId]);
         res.status(200).json({ success: true });
     } else {

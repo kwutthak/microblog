@@ -3,32 +3,11 @@
 
 <section class="login-register">
     <section class = "login-area">
-        <h2>Login</h2>
+        <h2>Login with Google</h2>
         <!-- errors will appear here -->
         {{#if loginError}}
             <p style="color: red;">{{loginError}}</p>
         {{/if}}
-        <form action="/login" method="POST">
-            <!-- the login form -->
-            <label for="login-username">Username:</label>
-            <input type="text" name="username" required>
-            <button type="submit">Login</button>
-        </form>
-    </section>
-
-    <div class="or-divider">- OR -</div>
-
-    <section class = "register-area">
-        <h2>Register</h2>
-        <!-- errors will appear here -->
-        {{#if regError}}
-            <p style="color: red;">{{regError}}</p>
-        {{/if}}
-        <form action="/register" method="POST">
-            <!-- the registration form -->
-            <label for="register-username">Username:</label>
-            <input type="text" name="username" required>
-            <button type="submit">Register</button>
-        </form>
+        <a href="/auth/google">Sign In with Google</a>
     </section>
 </section>
