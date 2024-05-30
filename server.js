@@ -356,7 +356,8 @@ async function updatePostLikes(req, res) {
     const post = await findPostById(postId);
     if (post) {
         await db.run('UPDATE posts SET likes = likes + 1 WHERE id = ?', [postId]);
-        res.status(200).json({ success: true, likes: post.likes });
+        const updatedPost = await findPostById(postId);
+        res.status(200).json({ success: true, likes: updatedPost.likes });
     } else {
         res.status(404).json({ success: false, message: 'Post not found' });
     }

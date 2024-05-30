@@ -363,6 +363,16 @@ nav a {
     align-items: center;
 }
 
+.login-register a {
+    color: white;
+    background-color: #262425;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
 /* Resposive Design Adjustments */
 
 @media (max-width: 600px) {
