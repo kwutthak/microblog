@@ -9,6 +9,8 @@ const sqlite3 = require('sqlite3');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const crypto = require('crypto');
+const multer = require('multer');
+const path = require('path');
 require('dotenv').config();
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,6 +50,19 @@ async function initializeDB() {
     db = await sqlite.open({ filename: dbFileName, driver: sqlite3.Database });
     console.log('Connected to the database.');
 }
+
+// Set up file upload with multer
+// 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -192,12 +207,13 @@ app.get('/error', (req, res) => {
 // Additional routes that you must implement
 
 // Add a new post and redirect to home
-app.post('/posts', async (req, res) => {
+app.post('/posts', upload.single('image'), async (req, res) => {
     const title = req.body.title;
     const content = req.body.content;
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
     const user = await getCurrentUser(req);
     if (user) {
-        await addPost(title, content, user);
+        await addPost(title, content, image, user);
         res.redirect('/');
     } else {
         res.redirect('/login');
@@ -415,9 +431,9 @@ async function getPosts(sortMethod) {
 }
 
 // Function to add a new post
-async function addPost(title, content, user) {
+async function addPost(title, content, image, user) {
     const date = getDate();
-    await db.run('INSERT INTO posts (title, content, username, timestamp, likes) VALUES (?, ?, ?, ?, ?)', [title, content, user.username, date, 0]);
+    await db.run('INSERT INTO posts (title, content, image, username, timestamp, likes) VALUES (?, ?, ?, ?, ?, ?)', [title, content, image, user.username, date, 0]);
 }
 
 // Function to generate an image avatar

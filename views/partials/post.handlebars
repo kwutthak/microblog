@@ -8,6 +8,11 @@
         <!-- the post -->
         <h3>{{title}}</h3>
         <p>{{content}}</p>
+        {{#if image}}
+            <div class="post-image">
+                <img src="{{image}}" alt="Post Image">
+            </div>
+        {{/if}}
         <div class="post-status-bar">
             <!-- everything that is shown in the status bar -->
             {{#ifCond user.username username}}

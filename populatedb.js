@@ -22,6 +22,7 @@ async function initializeDB() {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
             content TEXT NOT NULL,
+            image TEXT NOT NULL,
             username TEXT NOT NULL,
             timestamp DATETIME NOT NULL,
             likes INTEGER NOT NULL
@@ -41,21 +42,24 @@ async function initializeDB() {
     const posts = [
         { id: 1, 
           title: 'Cute!', 
-          content: 'Just took a bunch of new photos on our latest adventure! Can\'t wait to share them with everyone. #MemoryOfTheWorld #AstralExpress', 
+          content: 'Just took a bunch of new photos on our latest adventure! Can\'t wait to share them with everyone. #MemoryOfTheWorld #AstralExpress',
+          image: '', 
           username: 'March 7th', 
           timestamp: '2024-04-07 10:00', 
           likes: 0 
         },
         { id: 2, 
           title: 'Morals of Penacony', 
-          content: 'The balance of the universe can be delicate. Our latest mission has reminded me of the importance of maintaining harmony.', 
+          content: 'The balance of the universe can be delicate. Our latest mission has reminded me of the importance of maintaining harmony.',
+          image: '', 
           username: 'Dan Heng', 
           timestamp: '2024-01-22 12:00', 
           likes: 0 
         },
         { id: 3, 
           title: 'That\'s that me, espresso~', 
-          content: 'Enjoying a cup of coffee while plotting our next course. The stars never cease to amaze me. ', 
+          content: 'Enjoying a cup of coffee while plotting our next course. The stars never cease to amaze me. ',
+          image: '', 
           username: 'Himeko', 
           timestamp: '2024-05-21 9:00', 
           likes: 0 
@@ -72,8 +76,8 @@ async function initializeDB() {
 
     await Promise.all(posts.map(post => {
         return db.run(
-            'INSERT INTO posts (title, content, username, timestamp, likes) VALUES (?, ?, ?, ?, ?)',
-            [post.title, post.content, post.username, post.timestamp, post.likes]
+            'INSERT INTO posts (title, content, image, username, timestamp, likes) VALUES (?, ?, ?, ?, ?, ?)',
+            [post.title, post.content, post.image, post.username, post.timestamp, post.likes]
         );
     }));
 

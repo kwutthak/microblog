@@ -287,6 +287,33 @@ nav a {
     margin-right: 10px;
 }
 
+/* Homepage: Image Upload */
+
+input[type="file"] {
+    display: none;
+}
+
+.image-label {
+    display: inline-block;
+    font-size: 12px;
+    padding: 8px 16px;
+    margin-bottom: 5px;
+    background-color: #262425;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.file-name {
+    display: inline-block;
+    margin-left: 8px;
+    font-style: italic;
+  }
+
+.post-image img {
+    max-width: 100%;
+}
+
 /* Homepage: Emojis */
 
 .emoji-panel {
