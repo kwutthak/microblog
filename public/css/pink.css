@@ -1,19 +1,19 @@
 body {
     display: flex;
     flex-direction: column;
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
+    font-family: 'DIN-Regular', sans-serif;
+    background-color: #eee3ea;
     margin: 0;
     min-height: 100vh;
 }
 
 header {
-    background-color: #262425;
+    background-color: #510c3a;
     padding: 15px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 3px solid #ddd;
+    border-bottom: 3px solid #DDDDDD;
     height: 50px;
 }
 
@@ -23,7 +23,7 @@ header h1 {
 
 footer {
     text-align: center;
-    background-color: #262425;
+    background-color: #510c3a;
     padding: 5px;
     margin-top: auto;
     height: 50px;
@@ -46,7 +46,7 @@ header img {
 
 h1 {
     font-size: 35px;
-    color: #333;
+    color: #333333;
 }
 
 /* Navigation Buttons */
@@ -67,7 +67,7 @@ nav a {
     color: #FFFFFF;
     text-decoration: none;
     margin-left: 30px;
-    font-weight: bold;
+    font-family: 'DIN-Bold', sans-serif;
     font-size: 20px;
 }
 
@@ -130,7 +130,7 @@ nav a {
     border-radius: 5px;
     cursor: pointer;
     font-size: 15px;
-    border-color: #262425;
+    border-color: #510c3a;
 }
 
 .dropdown-menu {
@@ -151,7 +151,7 @@ nav a {
     min-width: 150px;
     margin-top: 2px;
     border-radius: 5px;
-    border-color: #ccc;
+    border-color: #CCCCCC;
 }
 
 .show {
@@ -225,7 +225,7 @@ nav a {
 }
 
 .like-button:hover {
-    color: red;
+    color: #510c3a;
 }
 
 .delete-button:hover {
@@ -267,7 +267,7 @@ nav a {
     padding: 10px;
     border: 1px solid rgba(78, 78, 78, 0.5);
     border-radius: 5px;
-    background-color: #262425;
+    background-color: #510c3a;
     border: none;
     cursor: pointer;
     box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
@@ -275,7 +275,7 @@ nav a {
 }
 
 .form-actions button:hover {
-    background-color: #a0c1e1;
+    background-color: #742b5d;
 }
 
 .post-button {
@@ -298,8 +298,8 @@ input[type="file"] {
     font-size: 12px;
     padding: 8px 16px;
     margin-bottom: 5px;
-    background-color: #262425;
-    color: #fff;
+    background-color: #510c3a;
+    color: #FFFFFF;
     border-radius: 4px;
     cursor: pointer;
 }
@@ -320,9 +320,9 @@ input[type="file"] {
     display: flex;
     margin-top: 10px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #CCCCCC;
     border-radius: 5px;
-    background-color: #fff;
+    background-color: #FFFFFF;
     max-height: 227px;
     max-width: 435px;
     overflow-y: auto;
@@ -365,7 +365,7 @@ input[type="file"] {
 }
 
 .profile-info {
-    background-color: #ffffff;
+    background-color: #FFFFFF;
     border-radius: 5px;
     margin: 20px;
     padding: 20px;
@@ -388,6 +388,33 @@ input[type="file"] {
 
 .post-content p {
     text-align: left;
+}
+
+.profile-theme {
+    margin-top: 20px;
+}
+
+.profile-theme label {
+    font-family: 'DIN-Bold', sans-serif;
+    margin-right: 5px;
+}
+
+.theme {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #CCCCCC;
+    font-size: 15px;
+}
+
+.theme-button {
+    padding: 10px;
+    border: 1px solid rgba(78, 78, 78, 0.5);
+    border-radius: 5px;
+    background-color: #510c3a;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
+    color: #FFFFFF;
 }
 
 /* Login / Register */
@@ -431,32 +458,48 @@ input[type="file"] {
     background-color: #262425;
     border: none;
     border-radius: 5px;
-    color: white;
+    color: #FFFFFF;
     font-size: 16px;
     cursor: pointer;
     box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
 }
 
 .login-area button:hover, .register-area button:hover {
-    background-color: #a0c1e1;
+    background-color: #bcbcbc;
 }
 
 .or-divider {
     font-size: 24px;
     margin: 0 20px;
-    font-weight: bold;
+    font-family: 'DIN-Bold', sans-serif;
     display: flex;
     align-items: center;
 }
 
 .login-register a {
-    color: white;
+    color: #FFFFFF;
     background-color: #262425;
     padding: 20px;
     text-align: center;
     text-decoration: none;
     border-radius: 5px;
     margin-bottom: 10px;
+}
+
+/* Font */
+
+@font-face {
+    font-family: 'DIN-Regular';
+    src: url('../fonts/din-regular-webfont.woff') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DIN-Bold';
+    src: url('../fonts/din-bold-webfont.woff') format('woff2');
+    font-weight: bold;
+    font-style: normal;
 }
 
 /* Resposive Design Adjustments */
