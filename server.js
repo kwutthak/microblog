@@ -131,12 +131,18 @@ app.use(passport.session());
 // Replace any of these variables below with constants for your application. These variables
 // should be used in your template files. 
 // 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
     res.locals.appName = 'Trailblogger';
     res.locals.copyrightYear = 2024;
     res.locals.postNeoType = 'Post';
     res.locals.loggedIn = req.session.loggedIn || false;
     res.locals.userId = req.session.userId || '';
+    if (req.session.userId) {
+        const user = await findUserById(req.session.userId);
+        res.locals.theme = user.theme || 'default';
+    } else {
+        res.locals.theme = 'default';
+    }
     next();
 });
 
@@ -226,6 +232,17 @@ app.post('/like/:id', isAuthenticated, async (req, res) => {
 // Render profile page
 app.get('/profile', isAuthenticated, async (req, res) => {
     await renderProfile(req, res);
+});
+// Change the website's theme
+app.post('/profile', isAuthenticated, async (req, res) => {
+    const user = await getCurrentUser(req);
+    const theme = req.body.theme;
+    if (user && theme) {
+        await db.run('UPDATE users SET theme = ? WHERE username = ?', [theme, user.username]);
+        res.redirect('/profile');
+    } else {
+        res.redirect('/profile?error=InvalidRequest');
+    }
 });
 // Serve the avatar image for the user
 app.get('/avatar/:username', async (req, res) => {

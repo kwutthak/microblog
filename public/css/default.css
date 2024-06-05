@@ -1,0 +1,484 @@
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #262425;
+    padding: 15px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #ddd;
+    height: 50px;
+}
+
+header h1 {
+    color: #FFFFFF;
+}
+
+footer {
+    text-align: center;
+    background-color: #262425;
+    padding: 5px;
+    margin-top: auto;
+    height: 50px;
+    color: #FFFFFF;
+}
+
+/* Logo Container */
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+header img {
+    width: 50px;
+    height: 50px;
+    margin-right: 35px;
+    border-radius: 5px;
+}
+
+h1 {
+    font-size: 35px;
+    color: #333;
+}
+
+/* Navigation Buttons */
+
+nav ul {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+}
+
+nav li {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+nav a {
+    color: #FFFFFF;
+    text-decoration: none;
+    margin-left: 30px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* User Avatar */
+
+.user-info img {
+    margin-left: 20px;
+}
+
+/* Homepage: Post List */
+
+.content-container {
+    display: flex;
+    justify-content: center;
+}
+
+.content-container h2 {
+    text-align: center;
+}
+
+.posts-list {
+    flex-grow: 1;
+    display:flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    margin-right: 40px;
+    max-width: 850px;
+}
+
+.posts-list p {
+    text-align: center;
+}
+
+.posts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.posts-header h2 {
+    margin-left: 60px;
+}
+
+/* Homepage: Post Dropdown */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    align-self: center;
+    margin-right: 20px;
+}
+
+.dropdown-button {
+    background-color: #FFFFFF;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    border-color: #262425;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #FFFFFF;
+    min-width: 150px;
+    border-radius: 5px;
+}
+
+.dropdown-menu button {
+    color: black;
+    background-color: #FFFFFF;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 15px;
+    min-width: 150px;
+    margin-top: 2px;
+    border-radius: 5px;
+    border-color: #ccc;
+}
+
+.show {
+    display:block
+}
+
+/* Homepage: Post Entries */
+
+.post {
+    display: flex;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    padding: 20px;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-avatar {
+    align-self: flex-start;
+}
+
+.post img.avatar {
+    height: 60px;
+    width: 60px;
+    border-radius: 10px;
+    margin-right: 35px;
+}
+
+.post-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+/* Homepage: Post Status Bar */
+
+.post-status-bar {
+    display: flex;
+    gap: 50px;
+    border-top: 2px solid #dedede;
+    padding-top: 5px;
+    color: #9c9c9c;
+    margin-top: 15px;
+}
+
+.like-button, .delete-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    width: 20px;
+    padding: 10px;
+    margin-top: 12px;
+    margin-left: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    color: gray;
+}
+
+.like-button {
+    font-size: 22px;
+    transition: color 0.3s;
+}
+
+.delete-button {
+    transition: color 0.3s;
+}
+
+.like-button:hover {
+    color: red;
+}
+
+.delete-button:hover {
+    color: black;
+}
+
+/* Homepage: New Post Submission Form */
+
+.post-form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    box-sizing: border-box;
+    margin-left: 20px;
+}
+
+#content, #title {
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 10px;
+    border: 1px solid rgba(78, 78, 78, 0.5);
+    border-radius: 5px;
+}
+
+#content {
+    height: 200px;
+    resize: none;
+}
+
+.form-actions {
+    display: flex;
+    margin-top: 5px;
+}
+
+.post-button, .emoji-button {
+    padding: 10px;
+    border: 1px solid rgba(78, 78, 78, 0.5);
+    border-radius: 5px;
+    background-color: #262425;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.form-actions button:hover {
+    background-color: #a0c1e1;
+}
+
+.post-button {
+    flex: 1;
+}
+
+.emoji-button {
+    flex: 0.1;
+    margin-right: 10px;
+}
+
+/* Homepage: Image Upload */
+
+input[type="file"] {
+    display: none;
+}
+
+.image-label {
+    display: inline-block;
+    font-size: 12px;
+    padding: 8px 16px;
+    margin-bottom: 5px;
+    background-color: #262425;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.file-name {
+    display: inline-block;
+    margin-left: 8px;
+    font-style: italic;
+  }
+
+.post-image img {
+    max-width: 100%;
+}
+
+/* Homepage: Emojis */
+
+.emoji-panel {
+    display: flex;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    max-height: 227px;
+    max-width: 435px;
+    overflow-y: auto;
+}
+
+#emoji-search {
+    flex: 1;
+    width: 85%;
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid rgba(78, 78, 78, 0.5);
+    border-radius: 5px;
+}
+
+.emoji-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.emoji-grid span {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Profile */
+
+.profile-container {
+    display: flex;
+}
+
+.profile-avatar {
+    display: flex;
+    margin: 30px;
+}
+
+.profile-avatar img {
+    border-radius: 10px;
+    width: 150px;
+}
+
+.profile-info {
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-posts {
+    flex-grow: 1;
+    box-sizing: border-box;
+    margin-right: 40px;
+}
+
+.user-posts h2 {
+    text-align: center;
+}
+
+.user-posts p {
+    text-align: center;
+}
+
+.post-content p {
+    text-align: left;
+}
+
+/* Login / Register */
+
+.login-register {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 70vh;
+    background-color: #f5f5f5;
+    padding: 20px;
+}
+
+.login-area, .register-area {
+    background-color: #FFFFFF;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-area h2, .register-area h2 {
+    margin-bottom: 20px;
+}
+
+.login-area input, .register-area input {
+    width: 92%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+.login-area button, .register-area button {
+    width: 100%;
+    padding: 10px;
+    background-color: #262425;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 3px 0px rgba(0, 0, 0, 0.1);
+}
+
+.login-area button:hover, .register-area button:hover {
+    background-color: #a0c1e1;
+}
+
+.or-divider {
+    font-size: 24px;
+    margin: 0 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.login-register a {
+    color: white;
+    background-color: #262425;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Resposive Design Adjustments */
+
+@media (max-width: 600px) {
+    .content-container {
+        flex-direction: column;
+    }
+    .login-register {
+        flex-direction: column;
+    }
+    header h1 {
+        font-size: 20px;
+    }
+    nav a {
+        font-size: 12px;
+        text-align: center;
+        margin-left: 15px;
+    }
+    .post-form {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+}

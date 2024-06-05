@@ -9,7 +9,19 @@
     
     <title>{{{appName}}}</title>
 
-    <link rel="stylesheet" href="/css/styles.css">
+    <!-- the user's theme -->
+    {{#ifCond theme 'default'}}
+        <link rel="stylesheet" href="/css/default.css">
+    {{/ifCond}}
+    {{#ifCond theme 'pink'}}
+        <link rel="stylesheet" href="/css/pink.css">
+    {{/ifCond}}
+    {{#ifCond theme 'blue'}}
+        <link rel="stylesheet" href="/css/blue.css">
+    {{/ifCond}}
+    {{#ifCond theme 'dark'}}
+        <link rel="stylesheet" href="/css/dark.css">
+    {{/ifCond}}
 </head>
 <body>
     <header>

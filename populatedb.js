@@ -15,7 +15,8 @@ async function initializeDB() {
             username TEXT NOT NULL UNIQUE,
             hashedGoogleId TEXT NOT NULL UNIQUE,
             avatar_url TEXT,
-            memberSince DATETIME NOT NULL
+            memberSince DATETIME NOT NULL,
+            theme TEXT DEFAULT 'default'
         );
 
         CREATE TABLE IF NOT EXISTS posts (
@@ -31,12 +32,12 @@ async function initializeDB() {
 
     // Sample data - Replace these arrays with your own data
     const users = [
-        { id: 1, username: 'Caelus', hashedGoogleId: 'hashedGoogleId1', avatar_url: '', memberSince: '2023-04-26 12:00' },
-        { id: 2, username: 'Stelle', hashedGoogleId: 'hashedGoogleId2', avatar_url: '', memberSince: '2023-04-26 12:00' },
-        { id: 3, username: 'March 7th', hashedGoogleId: 'hashedGoogleId3', avatar_url: '', memberSince: '2023-04-26 12:00' },
-        { id: 4, username: 'Dan Heng', hashedGoogleId: 'hashedGoogleId4', avatar_url: '', memberSince: '2023-04-26 12:00' },
-        { id: 5, username: 'Welt', hashedGoogleId: 'hashedGoogleId5', avatar_url: '', memberSince: '2023-04-26 12:00' },
-        { id: 6, username: 'Himeko', hashedGoogleId: 'hashedGoogleId6', avatar_url: '', memberSince: '2023-04-26 12:00' }
+        { id: 1, username: 'Caelus', hashedGoogleId: 'hashedGoogleId1', avatar_url: '', memberSince: '2023-04-26 12:00', theme: 'default' },
+        { id: 2, username: 'Stelle', hashedGoogleId: 'hashedGoogleId2', avatar_url: '', memberSince: '2023-04-26 12:00', theme: 'default' },
+        { id: 3, username: 'March 7th', hashedGoogleId: 'hashedGoogleId3', avatar_url: '', memberSince: '2023-04-26 12:00', theme: 'default' },
+        { id: 4, username: 'Dan Heng', hashedGoogleId: 'hashedGoogleId4', avatar_url: '', memberSince: '2023-04-26 12:00', theme: 'default' },
+        { id: 5, username: 'Welt', hashedGoogleId: 'hashedGoogleId5', avatar_url: '', memberSince: '2023-04-26 12:00', theme: 'default' },
+        { id: 6, username: 'Himeko', hashedGoogleId: 'hashedGoogleId6', avatar_url: '', memberSince: '2023-04-26 12:00', theme: 'default' }
     ];
 
     const posts = [
@@ -69,8 +70,8 @@ async function initializeDB() {
     // Insert sample data into the database
     await Promise.all(users.map(user => {
         return db.run(
-            'INSERT INTO users (username, hashedGoogleId, avatar_url, memberSince) VALUES (?, ?, ?, ?)',
-            [user.username, user.hashedGoogleId, user.avatar_url, user.memberSince]
+            'INSERT INTO users (username, hashedGoogleId, avatar_url, memberSince, theme) VALUES (?, ?, ?, ?, ?)',
+            [user.username, user.hashedGoogleId, user.avatar_url, user.memberSince, user.theme]
         );
     }));
 

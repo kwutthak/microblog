@@ -12,6 +12,18 @@
         <p><b>Username:</b> {{user.username}}</p>
         <p><b>Member since:</b> {{user.memberSince}}</p>
     </section>
+    <form action="/profile" method="POST">
+        <div class="profile-theme">
+            <label for="theme">Choose Your Theme:</label>
+            <select name="theme" class="theme">
+                <option value="default">Astral Express</option>
+                <option value="pink">Divination Commission</option>
+                <option value="blue">Vidyadhara</option>
+                <option value="dark">Nihility</option>
+            </select>
+            <button type="submit" class="theme-button">Change</button>
+        </div>
+    </form>
 </div>
 
 <!-- list of all the current user's posts -->
