@@ -23,7 +23,7 @@ async function initializeDB() {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
             content TEXT NOT NULL,
-            image TEXT NOT NULL,
+            image TEXT,
             username TEXT NOT NULL,
             timestamp DATETIME NOT NULL,
             likes INTEGER NOT NULL
