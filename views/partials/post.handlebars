@@ -70,6 +70,7 @@
                 // remove the post element on client side
                 const postElement = document.querySelector(`.post[data-id="${postId}"]`);
                 postElement.remove();
+                window.location.reload(true);
             } else {
                 console.error(result.message);
             }

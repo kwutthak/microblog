@@ -523,5 +523,10 @@ input[type="file"] {
         margin-left: 15px;
         margin-right: 15px;
     }
-
+    .profile-container {
+        flex-direction: column;
+    }
+    .profile-theme {
+        margin-left: 20px;
+    }
 }
